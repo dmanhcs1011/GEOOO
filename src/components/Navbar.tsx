@@ -13,7 +13,7 @@ import {
 } from 'lucide-react';
 import { speechService, SpeechState } from '../utils/speech';
 
-export type ActiveTab = 'overview' | 'map' | 'curriculum' | 'teas' | 'disaster' | 'quiz' | 'tech' | 'ai';
+export type ActiveTab = 'overview' | 'map' | 'curriculum' | 'teas' | 'disaster' | 'quiz' | 'ai';
 
 interface NavbarProps {
   activeTab: ActiveTab;
@@ -72,12 +72,6 @@ export const Navbar: React.FC<NavbarProps> = ({
       labelVi: 'Thử thách GDĐP',
       labelEn: 'Quiz Challenge',
       icon: Award,
-    },
-    {
-      id: 'tech' as ActiveTab,
-      labelVi: '📘 Hướng dẫn Kỹ thuật',
-      labelEn: '📘 Tech Guide',
-      icon: Code,
     },
   ];
 

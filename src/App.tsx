@@ -7,7 +7,6 @@ import { CurriculumSection } from './components/CurriculumSection';
 import { FiveTeasSection } from './components/FiveTeasSection';
 import { DisasterSafetySection } from './components/DisasterSafetySection';
 import { GeoGameSection } from './components/GeoGameSection';
-import { TechGuideSection } from './components/TechGuideSection';
 import { AiAssistantModal } from './components/AiAssistantModal';
 import { PLACES, Place } from './data/geoData';
 
@@ -18,16 +17,40 @@ export default function App() {
   const [selectedPlace, setSelectedPlace] = useState<Place | null>(null);
   const [isAiOpen, setIsAiOpen] = useState(false);
 
-  // When user clicks one of the 3 big cards in the Hero Banner
+  // Điều hướng khi người dùng bấm vào 3 mục dưới tiêu đề
   const handleSelectLayerTab = (layer: MainContentLayer) => {
     setActiveLayer(layer);
-    if (activeTab !== 'overview' && activeTab !== 'map') {
-      setActiveTab('map');
-    }
-    // Scroll smoothly to map section if on overview
-    const mapElement = document.getElementById('section-map');
-    if (mapElement) {
-      mapElement.scrollIntoView({ behavior: 'smooth' });
+
+    if (layer === 'tourism') {
+      if (activeTab !== 'overview' && activeTab !== 'map') {
+        setActiveTab('overview');
+      }
+      setTimeout(() => {
+        const mapEl = document.getElementById('section-map');
+        if (mapEl) {
+          mapEl.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 50);
+    } else if (layer === 'education') {
+      if (activeTab !== 'overview' && activeTab !== 'curriculum') {
+        setActiveTab('overview');
+      }
+      setTimeout(() => {
+        const eduEl = document.getElementById('section-curriculum');
+        if (eduEl) {
+          eduEl.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 50);
+    } else if (layer === 'disaster') {
+      if (activeTab !== 'overview' && activeTab !== 'disaster') {
+        setActiveTab('overview');
+      }
+      setTimeout(() => {
+        const disasterEl = document.getElementById('section-disaster');
+        if (disasterEl) {
+          disasterEl.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 50);
     }
   };
 
@@ -66,18 +89,14 @@ export default function App() {
 
       {/* 2. Main Body Content */}
       <main className="flex-1">
-        {/* Full Overview Page (Giống web site gốc Google Sites với các đề mục chia bố cục rõ ràng) */}
+        {/* Full Overview Page (Giống website gốc Google Sites với các đề mục chia bố cục rõ ràng) */}
         {activeTab === 'overview' && (
           <div className="space-y-12 pb-16">
-            {/* Hero Banner with Title & 3 Layer Cards */}
+            {/* Hero Banner với tiêu đề, ảnh nền hồ nước đồi xanh và 3 mục điều hướng y như trong ảnh */}
             <HeroBanner
               lang={lang}
+              activeLayer={activeLayer}
               onSelectLayerTab={handleSelectLayerTab}
-              onNavigateSection={(id) => {
-                const el = document.getElementById(id);
-                if (el) el.scrollIntoView({ behavior: 'smooth' });
-              }}
-              onOpenTechGuide={() => setActiveTab('tech')}
             />
 
             {/* MỤC 01: BẢN ĐỒ ĐỊA PHƯƠNG TƯƠNG TÁC (3 LỚP & 92 XÃ PHƯỜNG) */}
@@ -94,8 +113,8 @@ export default function App() {
                   </div>
                   <span className="text-xs text-stone-500 italic">
                     {lang === 'vi'
-                      ? 'Bấm 3 nút phía trên để lọc nội dung theo chuyên đề'
-                      : 'Use the 3 buttons above to filter themed layers'}
+                      ? 'Lớp nội dung hiển thị sẽ tương ứng với các mục bạn lựa chọn'
+                      : 'The displayed map layer syncs with your selected section'}
                   </span>
                 </div>
               </div>
@@ -167,22 +186,10 @@ export default function App() {
               </div>
               <GeoGameSection lang={lang} />
             </section>
-
-            {/* MỤC HƯỚNG DẪN KỸ THUẬT: GIẢI ĐÁP 2 CÂU HỎI VIẾT TAY */}
-            <section id="section-tech" className="scroll-mt-20">
-              <TechGuideSection
-                lang={lang}
-                onActivateLayer={(layer) => {
-                  setActiveLayer(layer);
-                  const el = document.getElementById('section-map');
-                  if (el) el.scrollIntoView({ behavior: 'smooth' });
-                }}
-              />
-            </section>
           </div>
         )}
 
-        {/* Tab-specific Views if user prefers isolated tab navigation */}
+        {/* Tab-specific Views */}
         {activeTab === 'map' && (
           <div className="py-4">
             <MapViewer
@@ -217,16 +224,6 @@ export default function App() {
         {activeTab === 'quiz' && (
           <GeoGameSection lang={lang} />
         )}
-
-        {activeTab === 'tech' && (
-          <TechGuideSection
-            lang={lang}
-            onActivateLayer={(layer) => {
-              setActiveLayer(layer);
-              setActiveTab('map');
-            }}
-          />
-        )}
       </main>
 
       {/* 3. Footer (Nền sáng, trang trọng) */}
@@ -243,7 +240,7 @@ export default function App() {
           </div>
           <p className="max-w-2xl mx-auto text-[11px] text-stone-500 mt-2 leading-relaxed">
             {lang === 'vi'
-              ? 'Công cụ học tập số hóa tương tác nội dung Giáo dục địa phương Lớp 8 tỉnh Thái Nguyên (Chương trình GDPT 2018). Thông tin địa lý, di tích và cảnh báo thiên tai phục vụ mục đích nghiên cứu học đường.'
+              ? 'Công cụ học tập số hóa tương tác nội dung Giáo dục địa phương Lớp 8 tỉnh Thái Nguyên (Chương trình GDPT 2018). Thông tin địa lý, di tích và phòng chống thiên tai.'
               : 'Interactive digital learning support tool for Grade 8 Local Education of Thai Nguyen. Geographical and hazard data are compiled for educational purposes.'}
           </p>
         </div>
