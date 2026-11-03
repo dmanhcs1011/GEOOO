@@ -100,7 +100,7 @@ export const GeoGameSection: React.FC<GeoGameSectionProps> = ({ lang }) => {
       {/* Header Banner (Nền sáng) */}
       <div className="text-center space-y-1.5">
         <span className="px-3.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-emerald-100 text-[#116149] border border-emerald-200 inline-block">
-          🎮 {lang === 'vi' ? 'Trò Chơi Học Tập GDĐP Lớp 8' : 'Grade 8 Geo Challenge'}
+          🎮 {lang === 'vi' ? 'Trò Chơi Học Tập GDĐP' : 'Local Education Geo Challenge'}
         </span>
         <h3 className="text-xl sm:text-3xl font-extrabold text-stone-900">
           {lang === 'vi' ? 'Thử Thách Nhà Khám Phá Thái Nguyên' : 'Thai Nguyen Explorer Challenge'}

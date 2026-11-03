@@ -453,7 +453,7 @@ export const MapViewer: React.FC<MapViewerProps> = ({
               }`}
             >
               <span>📚</span>
-              <span>{lang === 'vi' ? '02. GDĐP & Vùng Chè' : '02. Grade 8 & Teas'}</span>
+              <span>{lang === 'vi' ? '02. GDĐP & Vùng Chè' : '02. Local Education & Teas'}</span>
             </button>
 
             <button
@@ -1171,8 +1171,8 @@ export const MapViewer: React.FC<MapViewerProps> = ({
 
               <span className="text-[11px] text-stone-500 font-medium">
                 {lang === 'vi'
-                  ? 'Bản đồ 92 đơn vị hành chính sau sáp nhập (NQ 1683) · GDĐP Lớp 8'
-                  : '92 Communes Unified Map (Resolution 1683) · Grade 8 Curriculum'}
+                  ? 'Bản đồ 92 đơn vị hành chính sau sáp nhập (NQ 1683) · GDĐP'
+                  : '92 Communes Unified Map (Resolution 1683) · Local Education'}
               </span>
             </div>
           </div>

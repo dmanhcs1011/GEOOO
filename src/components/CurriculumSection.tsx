@@ -37,13 +37,13 @@ export const CurriculumSection: React.FC<CurriculumSectionProps> = ({
 
   return (
     <div id="section-curriculum" className="max-w-7xl mx-auto px-4 sm:px-6 py-10 space-y-10 scroll-mt-20">
-      {/* 1. Header: 02. Giáo dục địa phương / 02. Grade 8 Local Education */}
+      {/* 1. Header: 02. Giáo dục địa phương / 02. Local Education */}
       <div className="space-y-1 border-b border-stone-200 pb-4">
         <h2 className="text-2xl sm:text-3xl font-extrabold text-stone-900 tracking-tight">
           02. Giáo dục địa phương
         </h2>
         <h3 className="text-lg sm:text-xl font-medium text-stone-600">
-          02. Grade 8 Local Education
+          02. Local Education
         </h3>
       </div>
 
@@ -618,17 +618,17 @@ export const CurriculumSection: React.FC<CurriculumSectionProps> = ({
         </div>
       </div>
 
-      {/* 5. Ảnh Thực Tế Học Sinh Lớp 8 Đang Học GDĐP với THAINGUYEN Geo-Map (Khớp chuẩn xác ảnh 9, 10, 11) */}
+      {/* 5. Ảnh Thực Tế Học Sinh Đang Học GDĐP với THAINGUYEN Geo-Map (Khớp chuẩn xác ảnh 9, 10, 11) */}
       <div className="space-y-4 pt-4 border-t border-stone-200">
         <div className="text-center max-w-2xl mx-auto space-y-1">
           <span className="text-xs font-bold uppercase tracking-wider text-[#116149] bg-emerald-50 px-3 py-1 rounded-full inline-block">
             Ứng Dụng Thực Tiễn Giảng Dạy
           </span>
           <h4 className="text-lg sm:text-xl font-extrabold text-stone-900">
-            Học Sinh Lớp 8 Trải Nghiệm Học Tập với THAINGUYEN Geo-Map
+            Học Sinh Trải Nghiệm Học Tập với THAINGUYEN Geo-Map
           </h4>
           <p className="text-xs text-stone-500">
-            Hình ảnh các tiết học môn Giáo dục địa phương Lớp 8 tại các trường THCS tỉnh Thái Nguyên
+            Hình ảnh các tiết học môn Giáo dục địa phương tại các trường THCS tỉnh Thái Nguyên
           </p>
         </div>
 
@@ -637,12 +637,12 @@ export const CurriculumSection: React.FC<CurriculumSectionProps> = ({
             <div className="rounded-xl overflow-hidden aspect-4/3">
               <img
                 src="/assets/aistudio/unnamed_6694c677.jpg"
-                alt="Toàn cảnh lớp học môn GDĐP Lớp 8 với THAINGUYEN Geo-Map"
+                alt="Toàn cảnh lớp học môn GDĐP với THAINGUYEN Geo-Map"
                 className="w-full h-full object-cover"
               />
             </div>
             <p className="text-[11px] text-stone-600 font-semibold text-center mt-2">
-              Toàn cảnh lớp học môn GDĐP Lớp 8 với THAINGUYEN Geo-Map
+              Toàn cảnh lớp học môn GDĐP với THAINGUYEN Geo-Map
             </p>
           </div>
 

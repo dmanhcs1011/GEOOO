@@ -42,7 +42,7 @@ export const ExploreChallengeBanner: React.FC<ExploreChallengeBannerProps> = ({
             THAINGUYEN GEO-MAP
           </h3>
           <p className="text-xs sm:text-sm font-semibold uppercase tracking-wider text-emerald-200">
-            {lang === 'vi' ? 'KHÁM PHÁ GIÁO DỤC ĐỊA PHƯƠNG LỚP 8' : 'GRADE 8 LOCAL EDUCATION EXPLORER'}
+            {lang === 'vi' ? 'KHÁM PHÁ GIÁO DỤC ĐỊA PHƯƠNG' : 'LOCAL EDUCATION EXPLORER'}
           </p>
           <p className="text-xs text-emerald-100 opacity-95">
             {lang === 'vi'

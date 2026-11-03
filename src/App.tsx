@@ -163,14 +163,14 @@ export default function App() {
               />
             </section>
 
-            {/* MỤC 02: GIÁO DỤC ĐỊA PHƯƠNG LỚP 8 */}
+            {/* MỤC 02: GIÁO DỤC ĐỊA PHƯƠNG */}
             <section id="section-curriculum" className="scroll-mt-20">
               <div className="max-w-7xl mx-auto px-4 sm:px-6 mb-2">
                 <span className="text-xs font-bold uppercase tracking-wider text-[#116149]">
                   {lang === 'vi' ? 'MỤC 02 · TÀI LIỆU HỌC TẬP' : 'SECTION 02 · STUDY CURRICULUM'}
                 </span>
                 <h2 className="text-2xl font-extrabold text-stone-900">
-                  {lang === 'vi' ? '02. Giáo Dục Địa Phương Lớp 8' : '02. Grade 8 Local Education'}
+                  {lang === 'vi' ? '02. Giáo Dục Địa Phương' : '02. Local Education'}
                 </h2>
               </div>
               <CurriculumSection
@@ -280,7 +280,7 @@ export default function App() {
           <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-4 font-bold text-stone-800">
             <span className="text-[#116149]">THAINGUYEN Geo-Map</span>
             <span>•</span>
-            <span>Giáo Dục Địa Phương Lớp 8 Tỉnh Thái Nguyên</span>
+            <span>Giáo Dục Địa Phương Tỉnh Thái Nguyên</span>
             <span>•</span>
             <span>Ngũ Đại Danh Trà & Di Tích Lịch Sử</span>
             <span>•</span>
@@ -288,8 +288,8 @@ export default function App() {
           </div>
           <p className="max-w-2xl mx-auto text-[11px] text-stone-500 mt-2 leading-relaxed">
             {lang === 'vi'
-              ? 'Công cụ học tập số hóa tương tác nội dung Giáo dục địa phương Lớp 8 tỉnh Thái Nguyên (Chương trình GDPT 2018). Thông tin địa lý, di tích và phòng chống thiên tai.'
-              : 'Interactive digital learning support tool for Grade 8 Local Education of Thai Nguyen. Geographical and hazard data are compiled for educational purposes.'}
+              ? 'Công cụ học tập số hóa tương tác nội dung Giáo dục địa phương tỉnh Thái Nguyên (Chương trình GDPT 2018). Thông tin địa lý, di tích và phòng chống thiên tai.'
+              : 'Interactive digital learning support tool for Local Education of Thai Nguyen. Geographical and hazard data are compiled for educational purposes.'}
           </p>
         </div>
       </footer>

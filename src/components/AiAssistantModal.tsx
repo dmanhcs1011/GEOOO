@@ -36,8 +36,8 @@ export const AiAssistantModal: React.FC<AiAssistantModalProps> = ({
       sender: 'ai',
       text:
         lang === 'vi'
-          ? 'Xin chào các em học sinh Lớp 8! Thầy/Cô là Trợ lý Ảo Học tập GDĐP Thái Nguyên. Em có thể hỏi thầy/cô về di tích ATK Định Hóa, Ngũ đại danh trà, hồ Ba Bể, hồ Núi Cốc hoặc kỹ năng phòng tránh ngập lụt, sạt lở đất nhé!'
-          : 'Hello Grade 8 students! I am your Thai Nguyen Local Geo-AI Assistant. Ask me anything about ATK Dinh Hoa, the 5 Famous Teas, Ba Be Lake, or flood and landslide safety protocols!',
+          ? 'Xin chào các em học sinh! Thầy/Cô là Trợ lý Ảo Học tập GDĐP Thái Nguyên. Em có thể hỏi thầy/cô về di tích ATK Định Hóa, Ngũ đại danh trà, hồ Ba Bể, hồ Núi Cốc hoặc kỹ năng phòng tránh ngập lụt, sạt lở đất nhé!'
+          : 'Hello students! I am your Thai Nguyen Local Geo-AI Assistant. Ask me anything about ATK Dinh Hoa, the 5 Famous Teas, Ba Be Lake, or flood and landslide safety protocols!',
     },
   ]);
   const [inputText, setInputText] = useState('');
@@ -125,8 +125,8 @@ export const AiAssistantModal: React.FC<AiAssistantModalProps> = ({
       } else {
         answer =
           lang === 'vi'
-            ? `Về câu hỏi của em: "${q}".\nTrong chương trình Giáo dục địa phương Lớp 8 tỉnh Thái Nguyên, các em được trang bị kiến thức về 5 chủ đề cốt lõi: 1. Các di tích lịch sử cách mạng như ATK Định Hóa; 2. Thắng cảnh tự nhiên Hồ Núi Cốc, Hồ Ba Bể; 3. Di sản văn hóa 54 dân tộc tại Bảo tàng Quốc gia & Làng Thái Hải; 4. Làng nghề truyền thống & Ngũ đại danh trà; 5. Phòng chống lũ lụt sông Cầu và sạt lở núi Tam Đảo. Em có thể bấm vào các thẻ trên bản đồ số để xem tọa độ và hình ảnh chi tiết!`
-            : `Regarding your inquiry: In Grade 8 Local Education of Thai Nguyen, core topics cover historical sites (ATK Dinh Hoa), natural lakes (Nui Coc, Ba Be), 54 ethnic heritage, 5 Famous Tea Terroirs, and Cau River flood prevention protocols. Explore the interactive map layers for coordinates!`;
+            ? `Về câu hỏi của em: "${q}".\nTrong chương trình Giáo dục địa phương tỉnh Thái Nguyên, các em được trang bị kiến thức về 5 chủ đề cốt lõi: 1. Các di tích lịch sử cách mạng như ATK Định Hóa; 2. Thắng cảnh tự nhiên Hồ Núi Cốc, Hồ Ba Bể; 3. Di sản văn hóa 54 dân tộc tại Bảo tàng Quốc gia & Làng Thái Hải; 4. Làng nghề truyền thống & Ngũ đại danh trà; 5. Phòng chống lũ lụt sông Cầu và sạt lở núi Tam Đảo. Em có thể bấm vào các thẻ trên bản đồ số để xem tọa độ và hình ảnh chi tiết!`
+            : `Regarding your inquiry: In Local Education of Thai Nguyen, core topics cover historical sites (ATK Dinh Hoa), natural lakes (Nui Coc, Ba Be), 54 ethnic heritage, 5 Famous Tea Terroirs, and Cau River flood prevention protocols. Explore the interactive map layers for coordinates!`;
       }
 
       setMessages((prev) => [
@@ -163,7 +163,7 @@ export const AiAssistantModal: React.FC<AiAssistantModalProps> = ({
                   {lang === 'vi' ? 'Trợ Lý AI Học Tập GDĐP Thái Nguyên' : 'Thai Nguyen Local Geo-AI Tutor'}
                 </h3>
                 <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-400 text-stone-900">
-                  Lớp 8
+                  GDĐP
                 </span>
               </div>
               <p className="text-xs text-emerald-100">
@@ -266,8 +266,8 @@ export const AiAssistantModal: React.FC<AiAssistantModalProps> = ({
               onChange={(e) => setInputText(e.target.value)}
               placeholder={
                 lang === 'vi'
-                  ? 'Đặt câu hỏi về GDĐP Thái Nguyên Lớp 8...'
-                  : 'Ask about Thai Nguyen Grade 8 Local Education...'
+                  ? 'Đặt câu hỏi về GDĐP Thái Nguyên...'
+                  : 'Ask about Thai Nguyen Local Education...'
               }
               className="flex-1 px-4 py-2.5 rounded-2xl bg-stone-50 border border-stone-200 text-stone-900 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-[#116149]"
             />

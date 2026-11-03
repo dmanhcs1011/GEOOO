@@ -117,8 +117,8 @@ export const PlaceDetailModal: React.FC<PlaceDetailModalProps> = ({
                 </div>
                 <p className="text-xs text-emerald-800">
                   {lang === 'vi'
-                    ? 'Nghe phần giới thiệu dành cho học sinh Lớp 8'
-                    : 'Listen to the Grade 8 educational narration'}
+                    ? 'Nghe phần giới thiệu dành cho học sinh'
+                    : 'Listen to the educational narration'}
                 </p>
               </div>
             </div>
@@ -182,7 +182,7 @@ export const PlaceDetailModal: React.FC<PlaceDetailModalProps> = ({
               <ShieldCheck className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
               <div>
                 <h4 className="text-xs font-bold text-amber-900 uppercase">
-                  💡 {lang === 'vi' ? 'Em hãy ghi nhớ (GDĐP Lớp 8)' : 'Key Student Takeaway'}
+                  💡 {lang === 'vi' ? 'Em hãy ghi nhớ (GDĐP)' : 'Key Student Takeaway'}
                 </h4>
                 <p className="text-xs text-amber-900 mt-0.5">
                   {lang === 'vi' ? place.keyTakeawayVi : place.keyTakeawayEn}

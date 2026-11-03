@@ -99,7 +99,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                   THAINGUYEN Geo-Map
                 </span>
                 <span className="hidden sm:inline-block px-2 py-0.5 text-[10px] font-bold bg-[#eaf5ef] text-[#116149] border border-[#116149]/20 rounded-full">
-                  GDĐP Lớp 8
+                  GDĐP
                 </span>
               </div>
               <p className="text-[11px] text-stone-500 font-medium truncate max-w-[200px] sm:max-w-none">

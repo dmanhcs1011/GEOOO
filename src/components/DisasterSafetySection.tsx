@@ -153,10 +153,10 @@ export const DisasterSafetySection: React.FC<DisasterSafetySectionProps> = ({
                 <span className="text-blue-700 font-medium underline underline-offset-2">Túc Duyên</span>, cầu sắt chung cư Tiến Bộ) bị ngập sâu và cô lập khi lũ sông Cầu dâng cao.
               </li>
               <li>
-                <strong>Khu vực vùng trũng ven sông:</strong> Một số xã trũng thấp, vùng ngầm tràn thuộc các huyện, thị xã phía Nam như{' '}
-                <span className="text-blue-700 font-medium underline underline-offset-2">Phú Bình</span>,{' '}
-                <span className="text-blue-700 font-medium underline underline-offset-2">Phổ Yên</span>,{' '}
-                <span className="text-blue-700 font-medium underline underline-offset-2">Đại Từ</span> và các xã miền núi như{' '}
+                <strong>Khu vực vùng trũng ven sông:</strong> Một số xã trũng thấp, vùng ngầm tràn thuộc thành phố và các huyện phía Nam như{' '}
+                <span className="text-blue-700 font-medium underline underline-offset-2">TP. Phổ Yên</span>,{' '}
+                <span className="text-blue-700 font-medium underline underline-offset-2">Huyện Phú Bình</span>,{' '}
+                <span className="text-blue-700 font-medium underline underline-offset-2">Huyện Đại Từ</span> và các xã miền núi như{' '}
                 <span className="text-blue-700 font-medium underline underline-offset-2">Tràng Xá</span>,{' '}
                 <span className="text-blue-700 font-medium underline underline-offset-2">Dân Tiến</span>,{' '}
                 <span className="text-blue-700 font-medium underline underline-offset-2">La Hiên (Võ Nhai)</span> thường xuyên bị chia cắt bởi nước lũ.
@@ -188,11 +188,13 @@ export const DisasterSafetySection: React.FC<DisasterSafetySectionProps> = ({
                 <span className="text-amber-800 font-medium underline underline-offset-2">Động Đạt</span>, và dọc tuyến Quốc lộ 3.
               </li>
               <li>
-                <strong>Huyện Đại Từ:</strong> Các xã khu vực chân núi Tam Đảo như{' '}
+                <strong>Huyện Đại Từ:</strong> Các xã, thị trấn khu vực chân núi Tam Đảo như{' '}
+                <span className="text-amber-800 font-medium underline underline-offset-2">Thị trấn Quân Chu</span>,{' '}
                 <span className="text-amber-800 font-medium underline underline-offset-2">Quân Chu</span>,{' '}
                 <span className="text-amber-800 font-medium underline underline-offset-2">Ký Phú</span>,{' '}
                 <span className="text-amber-800 font-medium underline underline-offset-2">Mỹ Yên</span>,{' '}
-                <span className="text-amber-800 font-medium underline underline-offset-2">Văn Yên</span>.
+                <span className="text-amber-800 font-medium underline underline-offset-2">Văn Yên</span>,{' '}
+                <span className="text-amber-800 font-medium underline underline-offset-2">La Bằng</span>.
               </li>
               <li>
                 <strong>Huyện Đồng Hỷ và Võ Nhai:</strong> Địa hình núi đá, núi đất xen kẽ dễ sụt lún, sạt lở taluy đường giao thông khi đất đạt trạng thái bão hòa nước sau các đợt mưa dài ngày.
@@ -247,7 +249,7 @@ export const DisasterSafetySection: React.FC<DisasterSafetySectionProps> = ({
                 <strong>Thai Nguyen City Center:</strong> Low-lying streets such as Luong Ngoc Quyen, Hoang Van Thu, Minh Cau, Hung Vuong, Nha Trang, and Ben Tuong are often affected by localized urban flooding. Riverside wards such as Linh Son, Gia Sang, Tich Luong, Quan Trieu, and Phan Dinh Phung (including the Tuc Duyen area and the area near the Tien Bo apartment complex and iron bridge) may experience deep flooding and isolation when the Cau River rises.
               </li>
               <li>
-                <strong>Low-Lying Areas Along Rivers:</strong> Some low-lying communes and areas near river crossings in the southern districts and towns, including Phu Binh, Pho Yen, and Dai Tu, as well as mountainous communes such as Trang Xa, Dan Tien, and La Hien (Vo Nhai), are often cut off by floodwaters.
+                <strong>Low-Lying Areas Along Rivers:</strong> Some low-lying communes and areas near river crossings in the southern city and districts, including Pho Yen City, Phu Binh District, and Dai Tu District, as well as mountainous communes such as Trang Xa, Dan Tien, and La Hien (Vo Nhai), are often cut off by floodwaters.
               </li>
             </ul>
           </div>
@@ -391,7 +393,7 @@ export const DisasterSafetySection: React.FC<DisasterSafetySectionProps> = ({
       <div className="bg-white rounded-3xl p-6 sm:p-8 border border-stone-200 shadow-xs space-y-5">
         <div>
           <span className="text-xs font-bold uppercase tracking-wider text-[#116149] bg-emerald-50 px-3 py-1 rounded-full inline-block mb-1">
-            {lang === 'vi' ? 'Cẩm Nang Kỹ Năng Sống Cho Học Sinh Lớp 8' : 'Student Life-Survival Handbook'}
+            {lang === 'vi' ? 'Cẩm Nang Kỹ Năng Sống Cho Học Sinh' : 'Student Life-Survival Handbook'}
           </span>
           <h3 className="text-xl sm:text-2xl font-black text-stone-900">
             {lang === 'vi'

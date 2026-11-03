@@ -63,8 +63,8 @@ export const HeroBanner: React.FC<HeroBannerProps> = ({
           {/* Heading */}
           <h1 className="text-2xl sm:text-4xl lg:text-5xl font-extrabold leading-tight tracking-tight max-w-5xl mb-4 text-white drop-shadow-sm font-serif">
             {lang === 'vi'
-              ? 'CÔNG CỤ HỖ TRỢ HỌC TẬP NỘI DUNG GIÁO DỤC ĐỊA PHƯƠNG LỚP 8 QUA THAINGUYEN GEO-MAP'
-              : 'A LEARNING SUPPORT TOOL FOR GRADE 8 LOCAL EDUCATION CONTENT THROUGH THAINGUYEN GEO-MAP'}
+              ? 'CÔNG CỤ HỖ TRỢ HỌC TẬP NỘI DUNG GIÁO DỤC ĐỊA PHƯƠNG QUA THAINGUYEN GEO-MAP'
+              : 'A LEARNING SUPPORT TOOL FOR LOCAL EDUCATION CONTENT THROUGH THAINGUYEN GEO-MAP'}
           </h1>
 
           {/* Subtitle */}
@@ -77,7 +77,7 @@ export const HeroBanner: React.FC<HeroBannerProps> = ({
           {/* Tag Badges */}
           <div className="flex flex-wrap items-center gap-2 mt-6">
             <span className="px-3.5 py-1 rounded-full text-xs font-semibold bg-white/20 border border-white/35 backdrop-blur-xs text-white">
-              🌿 Giáo Dục Địa Phương Lớp 8
+              🌿 Giáo Dục Địa Phương
             </span>
             <span className="px-3.5 py-1 rounded-full text-xs font-semibold bg-white/20 border border-white/35 backdrop-blur-xs text-white">
               📍 92 Xã / Phường (TN & BC)
