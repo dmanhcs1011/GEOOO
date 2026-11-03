@@ -1,0 +1,6 @@
+{
+  "name": "THAINGUYEN Geo-Map | Giáo Dục Địa Phương Lớp 8",
+  "description": "Công cụ học tập tương tác nội dung Giáo dục địa phương lớp 8 qua bản đồ số Thái Nguyên, ngũ đại danh trà, di tích lịch sử và cảnh báo thiên tai.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
