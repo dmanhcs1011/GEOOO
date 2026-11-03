@@ -7,9 +7,11 @@
 }
 
 /* Custom Leaflet Marker Styling */
-.custom-leaflet-pin {
+.custom-leaflet-pin,
+.custom-commune-pin {
   background: transparent !important;
   border: none !important;
+  box-shadow: none !important;
 }
 
 .leaflet-popup-content-wrapper {

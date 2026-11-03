@@ -1,3 +1,45 @@
+export type AdministrativeStatus = 'Sáp nhập theo NQ 1683' | 'Đơn vị giữ nguyên trạng';
+
+export type DevelopmentZone =
+  | 'Đô thị & Công nghiệp phía Nam'
+  | 'Vùng Trà - Danh thắng Núi Cốc'
+  | 'Căn cứ địa ATK Kháng chiến - Tây Bắc'
+  | 'Cao nguyên & Sinh thái phía Bắc'
+  | 'Núi đá & Thung lũng phía Đông';
+
+export const DEVELOPMENT_ZONES: { id: string; name: DevelopmentZone; desc: string; count: number }[] = [
+  {
+    id: 'zone-nam',
+    name: 'Đô thị & Công nghiệp phía Nam',
+    desc: 'Trung tâm đô thị hiện đại, các khu công nghiệp trọng điểm (Samsung, Sông Công, Điềm Thụy)',
+    count: 19,
+  },
+  {
+    id: 'zone-tra',
+    name: 'Vùng Trà - Danh thắng Núi Cốc',
+    desc: 'Thủ phủ danh trà Tân Cương, cảnh quan Hồ Núi Cốc, sườn đông dãy Tam Đảo',
+    count: 11,
+  },
+  {
+    id: 'zone-atk',
+    name: 'Căn cứ địa ATK Kháng chiến - Tây Bắc',
+    desc: 'Quần thể di tích lịch sử quốc gia đặc biệt ATK Định Hóa, Ba Bể, Chợ Đồn',
+    count: 16,
+  },
+  {
+    id: 'zone-bac',
+    name: 'Cao nguyên & Sinh thái phía Bắc',
+    desc: 'Vùng sinh thái cao nguyên, Vườn quốc gia Ba Bể, đèo Gió Ngân Sơn, rừng đầu nguồn',
+    count: 23,
+  },
+  {
+    id: 'zone-dong',
+    name: 'Núi đá & Thung lũng phía Đông',
+    desc: 'Thung lũng đá vôi Võ Nhai, di chỉ khảo cổ học tiền sử, vùng đặc sản na La Hiên & quế hồi Na Rì',
+    count: 23,
+  },
+];
+
 export interface Commune {
   number: number;
   id: string;
@@ -10,9 +52,34 @@ export interface Commune {
   featureVi: string;
   featureEn: string;
   highlight?: string;
+  zone: DevelopmentZone;
+  status: AdministrativeStatus;
 }
 
-export const COMMUNES_92: Commune[] = [
+export function getCommuneZone(num: number): DevelopmentZone {
+  if ([1, 2, 28, 29, 30, 31, 32, 33, 34, 35, 36].includes(num)) {
+    return 'Vùng Trà - Danh thắng Núi Cốc';
+  }
+  if ([3, 37, 38, 39, 40, 41, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90].includes(num)) {
+    return 'Đô thị & Công nghiệp phía Nam';
+  }
+  if ([4, 5, 6, 7, 8, 9, 10, 11, 45, 46, 54, 55, 56, 57, 58, 59].includes(num)) {
+    return 'Căn cứ địa ATK Kháng chiến - Tây Bắc';
+  }
+  if ([42, 43, 44, 47, 48, 49, 50, 51, 52, 53, 60, 61, 62, 63, 64, 71, 72, 73, 74, 75, 77, 91, 92].includes(num)) {
+    return 'Cao nguyên & Sinh thái phía Bắc';
+  }
+  return 'Núi đá & Thung lũng phía Đông';
+}
+
+export function getCommuneStatus(num: number): AdministrativeStatus {
+  if (num === 76 || num === 77) {
+    return 'Đơn vị giữ nguyên trạng';
+  }
+  return 'Sáp nhập theo NQ 1683';
+}
+
+const RAW_COMMUNES_92: Omit<Commune, 'zone' | 'status'>[] = [
   // 1-41: Các xã trọng điểm Thái Nguyên & liên kết
   {
     number: 1,
@@ -1215,3 +1282,10 @@ export const COMMUNES_92: Commune[] = [
     highlight: 'Trung tâm Tỉnh lỵ Bắc Kạn'
   }
 ];
+
+export const COMMUNES_92: Commune[] = RAW_COMMUNES_92.map((c) => ({
+  ...c,
+  zone: getCommuneZone(c.number),
+  status: getCommuneStatus(c.number),
+}));
+

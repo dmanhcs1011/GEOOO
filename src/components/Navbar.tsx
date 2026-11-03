@@ -44,16 +44,16 @@ export const Navbar: React.FC<NavbarProps> = ({
       icon: Map,
     },
     {
-      id: 'destinations' as ActiveTab,
-      labelVi: '01. Du lịch & Video',
-      labelEn: '01. Tourism & Video',
-      icon: Video,
-    },
-    {
       id: 'map' as ActiveTab,
-      labelVi: 'Bản đồ 92 Xã',
+      labelVi: 'Bản đồ 92 Xã/Phường',
       labelEn: 'Map & 92 Communes',
       icon: Map,
+    },
+    {
+      id: 'destinations' as ActiveTab,
+      labelVi: '01. Du lịch & Điểm đến',
+      labelEn: '01. Tourism & Video',
+      icon: Video,
     },
     {
       id: 'curriculum' as ActiveTab,

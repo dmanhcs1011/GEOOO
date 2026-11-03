@@ -83,8 +83,31 @@ export default function App() {
         onTabChange={(tab) => {
           if (tab === 'ai') {
             setIsAiOpen(true);
-          } else {
-            setActiveTab(tab);
+            return;
+          }
+          if (activeTab !== 'overview') {
+            setActiveTab('overview');
+          }
+          if (tab === 'overview') {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            return;
+          }
+          const sectionIdMap: Record<string, string> = {
+            map: 'section-map',
+            destinations: 'section-destinations',
+            curriculum: 'section-curriculum',
+            teas: 'section-teas',
+            disaster: 'section-disaster',
+            quiz: 'section-quiz',
+          };
+          const targetId = sectionIdMap[tab];
+          if (targetId) {
+            setTimeout(() => {
+              const el = document.getElementById(targetId);
+              if (el) {
+                el.scrollIntoView({ behavior: 'smooth' });
+              }
+            }, 60);
           }
         }}
         lang={lang}
