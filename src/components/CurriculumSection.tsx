@@ -618,117 +618,7 @@ export const CurriculumSection: React.FC<CurriculumSectionProps> = ({
         </div>
       </div>
 
-      {/* 5. Khối Bản đồ Khám phá & Thử thách học tập (Khớp chuẩn xác ảnh 6 & 7) */}
-      <div className="rounded-3xl bg-[#eaf5ef] border border-emerald-300/80 p-6 sm:p-10 shadow-sm space-y-8">
-        {/* Header xanh đậm */}
-        <div className="rounded-2xl bg-[#116149] text-white p-6 text-center space-y-2 shadow-sm">
-          <div className="text-2xl">🗺️ 🌿 📍</div>
-          <h3 className="text-xl sm:text-2xl font-black tracking-tight">
-            THAINGUYEN GEO-MAP
-          </h3>
-          <p className="text-xs sm:text-sm font-semibold uppercase tracking-wider text-emerald-200">
-            KHÁM PHÁ GIÁO DỤC ĐỊA PHƯƠNG LỚP 8
-          </p>
-          <p className="text-xs text-emerald-100 opacity-95">
-            Khám phá quê hương · Tích lũy kiến thức · Chinh phục thử thách
-          </p>
-        </div>
-
-        {/* Hướng dẫn */}
-        <div className="bg-white rounded-2xl p-5 border border-emerald-100 space-y-2 text-xs sm:text-sm text-stone-700 shadow-xs">
-          <div className="font-bold text-[#116149] flex items-center gap-2">
-            <span>🎮</span>
-            <span>HƯỚNG DẪN</span>
-          </div>
-          <ol className="list-decimal pl-5 space-y-1 text-stone-600">
-            <li>Bấm vào một địa điểm để khám phá.</li>
-            <li>Đọc thông tin giới thiệu.</li>
-            <li>Chọn "Bắt đầu thử thách" để trả lời câu hỏi và ghi điểm.</li>
-          </ol>
-        </div>
-
-        {/* 6 Nút địa điểm khám phá */}
-        <div className="bg-white/80 rounded-2xl p-6 border border-emerald-100 space-y-3 shadow-xs">
-          <div className="text-xs font-bold text-[#116149] uppercase tracking-wider flex items-center gap-1.5">
-            <span>📍</span>
-            <span>BẢN ĐỒ KHÁM PHÁ THÁI NGUYÊN</span>
-          </div>
-
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-            {[
-              { name: 'Hồ Núi Cốc', icon: '🏞️', placeId: 'nui-coc-lake' },
-              { name: 'Đồi chè Tân Cương', icon: '🍃', placeId: 'tea-tan-cuong' },
-              { name: 'ATK Định Hóa', icon: '🏛️', placeId: 'atk-dinh-hoa' },
-              { name: 'Hồ Ba Bể', icon: '🌊', placeId: 'ba-be-lake' },
-              { name: 'Văn hóa trà', icon: '🍵', placeId: 'tea-tan-cuong' },
-              { name: 'Địa hình & thiên tai', icon: '⛰️', placeId: 'flood-cau-river' },
-            ].map((item, idx) => (
-              <button
-                key={idx}
-                onClick={() => {
-                  if (onSelectPlaceById) {
-                    onSelectPlaceById(item.placeId);
-                  }
-                }}
-                className="py-3 px-3 rounded-xl bg-white hover:bg-emerald-50 text-stone-800 hover:text-[#116149] border border-stone-200/90 font-bold text-xs sm:text-sm transition-all shadow-2xs hover:shadow-sm flex items-center justify-center gap-2 cursor-pointer"
-              >
-                <span>{item.icon}</span>
-                <span>{item.name}</span>
-              </button>
-            ))}
-          </div>
-
-          <p className="text-[11px] text-stone-500 italic text-center pt-1">
-            Lưu ý: Đây là bản đồ trò chơi minh họa, không thể hiện ranh giới địa lý theo tỷ lệ.
-          </p>
-        </div>
-
-        {/* Thử thách nhà khám phá */}
-        <div className="bg-white rounded-2xl p-6 border border-emerald-100 space-y-4 shadow-xs">
-          <div className="flex items-center justify-between">
-            <div className="font-bold text-sm sm:text-base text-stone-900 flex items-center gap-2">
-              <span>🧠</span>
-              <span>THỬ THÁCH NHÀ KHÁM PHÁ</span>
-            </div>
-            <span className="text-xs font-bold px-3 py-1 rounded-full bg-emerald-100 text-[#116149]">
-              Điểm của bạn: 0
-            </span>
-          </div>
-
-          <p className="text-xs sm:text-sm text-stone-600">
-            Trả lời các câu hỏi về địa phương để nhận điểm thưởng và mở khóa danh hiệu Nhà khám phá Thái Nguyên.
-          </p>
-
-          <div className="flex items-center gap-3">
-            <button
-              onClick={() => {
-                const el = document.getElementById('section-quiz');
-                if (el) el.scrollIntoView({ behavior: 'smooth' });
-              }}
-              className="px-5 py-2.5 rounded-xl bg-[#116149] hover:bg-[#0e4e3a] text-white text-xs sm:text-sm font-bold flex items-center gap-2 transition-all cursor-pointer shadow-xs"
-            >
-              <span>▶</span>
-              <span>Bắt đầu thử thách</span>
-            </button>
-            <button
-              onClick={() => {
-                const el = document.getElementById('section-quiz');
-                if (el) el.scrollIntoView({ behavior: 'smooth' });
-              }}
-              className="px-4 py-2.5 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-700 text-xs sm:text-sm font-bold flex items-center gap-1.5 transition-all cursor-pointer"
-            >
-              <span>🔄</span>
-              <span>Chơi lại</span>
-            </button>
-          </div>
-
-          <div className="rounded-xl bg-[#f5f8f5] p-3 text-center text-xs text-[#116149] font-medium border border-emerald-200/50">
-            🌱 <strong>HỌC TẬP ĐỂ YÊU QUÊ HƯƠNG:</strong> Mỗi địa điểm là một câu chuyện. Mỗi câu trả lời đúng là một bước khám phá Thái Nguyên!
-          </div>
-        </div>
-      </div>
-
-      {/* 6. Ảnh Thực Tế Học Sinh Lớp 8 Đang Học GDĐP với THAINGUYEN Geo-Map (Khớp chuẩn xác ảnh 9, 10, 11) */}
+      {/* 5. Ảnh Thực Tế Học Sinh Lớp 8 Đang Học GDĐP với THAINGUYEN Geo-Map (Khớp chuẩn xác ảnh 9, 10, 11) */}
       <div className="space-y-4 pt-4 border-t border-stone-200">
         <div className="text-center max-w-2xl mx-auto space-y-1">
           <span className="text-xs font-bold uppercase tracking-wider text-[#116149] bg-emerald-50 px-3 py-1 rounded-full inline-block">
@@ -786,3 +676,4 @@ export const CurriculumSection: React.FC<CurriculumSectionProps> = ({
     </div>
   );
 };
+

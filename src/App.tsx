@@ -7,6 +7,7 @@ import { PlaceDetailModal } from './components/PlaceDetailModal';
 import { CurriculumSection } from './components/CurriculumSection';
 import { FiveTeasSection } from './components/FiveTeasSection';
 import { DisasterSafetySection } from './components/DisasterSafetySection';
+import { ExploreChallengeBanner } from './components/ExploreChallengeBanner';
 import { GeoGameSection } from './components/GeoGameSection';
 import { AiAssistantModal } from './components/AiAssistantModal';
 import { PLACES, Place } from './data/geoData';
@@ -196,14 +197,6 @@ export default function App() {
 
             {/* MỤC 03: KHÍ HẬU VÀ NƠI CÓ NGẬP LỤT, SẠT LỞ */}
             <section id="section-disaster" className="scroll-mt-20">
-              <div className="max-w-7xl mx-auto px-4 sm:px-6 mb-2">
-                <span className="text-xs font-bold uppercase tracking-wider text-rose-700">
-                  {lang === 'vi' ? 'MỤC 03 · ĐỊA LÝ & KỸ NĂNG SỐNG' : 'SECTION 03 · DISASTER MITIGATION'}
-                </span>
-                <h2 className="text-2xl font-extrabold text-stone-900">
-                  {lang === 'vi' ? '03. Khí Hậu Và Nơi Có Ngập Lụt, Sạt Lở' : '03. Climate & Flood, Landslide Hazard Zones'}
-                </h2>
-              </div>
               <DisasterSafetySection
                 lang={lang}
                 onNavigateToPlace={handleNavigateToPlace}
@@ -212,7 +205,7 @@ export default function App() {
 
             {/* MỤC TRÒ CHƠI THỬ THÁCH NHÀ KHÁM PHÁ */}
             <section id="section-quiz" className="scroll-mt-20">
-              <div className="max-w-7xl mx-auto px-4 sm:px-6 mb-2">
+              <div className="max-w-7xl mx-auto px-4 sm:px-6 mb-4">
                 <span className="text-xs font-bold uppercase tracking-wider text-[#116149]">
                   {lang === 'vi' ? 'MỤC 04 · THỰC HÀNH TƯƠNG TÁC' : 'SECTION 04 · INTERACTIVE CHALLENGE'}
                 </span>
@@ -220,6 +213,10 @@ export default function App() {
                   {lang === 'vi' ? 'Thử Thách Khám Phá Địa Phương Thái Nguyên' : 'Explorer Knowledge Challenge'}
                 </h2>
               </div>
+              <ExploreChallengeBanner
+                lang={lang}
+                onSelectPlaceById={handleSelectPlaceById}
+              />
               <GeoGameSection lang={lang} />
             </section>
           </div>
@@ -267,7 +264,13 @@ export default function App() {
         )}
 
         {activeTab === 'quiz' && (
-          <GeoGameSection lang={lang} />
+          <div className="py-4">
+            <ExploreChallengeBanner
+              lang={lang}
+              onSelectPlaceById={handleSelectPlaceById}
+            />
+            <GeoGameSection lang={lang} />
+          </div>
         )}
       </main>
 
