@@ -9,11 +9,11 @@ import {
   Volume2,
   Square,
   Globe,
-  Code
+  Video
 } from 'lucide-react';
 import { speechService, SpeechState } from '../utils/speech';
 
-export type ActiveTab = 'overview' | 'map' | 'curriculum' | 'teas' | 'disaster' | 'quiz' | 'ai';
+export type ActiveTab = 'overview' | 'destinations' | 'map' | 'curriculum' | 'teas' | 'disaster' | 'quiz' | 'ai';
 
 interface NavbarProps {
   activeTab: ActiveTab;
@@ -44,8 +44,14 @@ export const Navbar: React.FC<NavbarProps> = ({
       icon: Map,
     },
     {
+      id: 'destinations' as ActiveTab,
+      labelVi: '01. Du lịch & Video',
+      labelEn: '01. Tourism & Video',
+      icon: Video,
+    },
+    {
       id: 'map' as ActiveTab,
-      labelVi: 'Bản đồ & 92 Xã',
+      labelVi: 'Bản đồ 92 Xã',
       labelEn: 'Map & 92 Communes',
       icon: Map,
     },

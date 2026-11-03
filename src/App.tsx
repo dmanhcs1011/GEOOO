@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Navbar, ActiveTab } from './components/Navbar';
 import { HeroBanner } from './components/HeroBanner';
+import { DestinationShowcaseSection } from './components/DestinationShowcaseSection';
 import { MapViewer, MainContentLayer } from './components/MapViewer';
 import { PlaceDetailModal } from './components/PlaceDetailModal';
 import { CurriculumSection } from './components/CurriculumSection';
@@ -22,13 +23,13 @@ export default function App() {
     setActiveLayer(layer);
 
     if (layer === 'tourism') {
-      if (activeTab !== 'overview' && activeTab !== 'map') {
+      if (activeTab !== 'overview' && activeTab !== 'destinations') {
         setActiveTab('overview');
       }
       setTimeout(() => {
-        const mapEl = document.getElementById('section-map');
-        if (mapEl) {
-          mapEl.scrollIntoView({ behavior: 'smooth' });
+        const destEl = document.getElementById('section-destinations');
+        if (destEl) {
+          destEl.scrollIntoView({ behavior: 'smooth' });
         }
       }, 50);
     } else if (layer === 'education') {
@@ -58,11 +59,15 @@ export default function App() {
     const place = PLACES.find((p) => p.id === placeId);
     if (place) {
       setSelectedPlace(place);
-      setActiveTab('overview');
-      const mapElement = document.getElementById('section-map');
-      if (mapElement) {
-        mapElement.scrollIntoView({ behavior: 'smooth' });
+      if (activeTab !== 'overview') {
+        setActiveTab('overview');
       }
+      setTimeout(() => {
+        const mapElement = document.getElementById('section-map');
+        if (mapElement) {
+          mapElement.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 50);
     }
   };
 
@@ -99,13 +104,13 @@ export default function App() {
               onSelectLayerTab={handleSelectLayerTab}
             />
 
-            {/* MỤC 01: BẢN ĐỒ ĐỊA PHƯƠNG TƯƠNG TÁC (3 LỚP & 92 XÃ PHƯỜNG) */}
+            {/* MỤC BẢN ĐỒ ĐỊA PHƯƠNG TƯƠNG TÁC (3 LỚP & 92 XÃ PHƯỜNG ĐƯỢC ĐẨY LÊN TRƯỚC MỤC 1 THEO YÊU CẦU) */}
             <section id="section-map" className="scroll-mt-20">
               <div className="max-w-7xl mx-auto px-4 sm:px-6 mb-3">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                   <div>
                     <span className="text-xs font-bold uppercase tracking-wider text-[#116149]">
-                      {lang === 'vi' ? 'MỤC 01 · CÔNG CỤ SỐ HÓA ĐỊA PHƯƠNG' : 'SECTION 01 · DIGITAL GEOGRAPHY'}
+                      {lang === 'vi' ? 'CÔNG CỤ BẢN ĐỒ SỐ HÓA' : 'DIGITAL GEOGRAPHY MAP'}
                     </span>
                     <h2 className="text-2xl font-extrabold text-stone-900">
                       {lang === 'vi' ? 'Bản Đồ Tương Tác Số & 92 Xã Phường Thái Nguyên' : 'Interactive Geo-Map & 92 Communes'}
@@ -113,8 +118,8 @@ export default function App() {
                   </div>
                   <span className="text-xs text-stone-500 italic">
                     {lang === 'vi'
-                      ? 'Lớp nội dung hiển thị sẽ tương ứng với các mục bạn lựa chọn'
-                      : 'The displayed map layer syncs with your selected section'}
+                      ? 'Tích hợp đầy đủ tọa độ GPS và thông tin học tập tương tác'
+                      : 'Equipped with GPS markers and interactive learning annotations'}
                   </span>
                 </div>
               </div>
@@ -123,6 +128,14 @@ export default function App() {
                 onSelectPlace={(place) => setSelectedPlace(place)}
                 lang={lang}
                 forcedLayer={activeLayer}
+              />
+            </section>
+
+            {/* MỤC 01 · DU LỊCH & ĐIỂM ĐẾN (BỐ CỤC CHUẨN GOOGLE SITES: HÌNH ẢNH, NỘI DUNG SONG NGỮ, VIDEO YOUTUBE) */}
+            <section id="section-destinations" className="scroll-mt-20">
+              <DestinationShowcaseSection
+                lang={lang}
+                onSelectPlaceById={handleSelectPlaceById}
               />
             </section>
 
@@ -190,6 +203,15 @@ export default function App() {
         )}
 
         {/* Tab-specific Views */}
+        {activeTab === 'destinations' && (
+          <div className="py-4">
+            <DestinationShowcaseSection
+              lang={lang}
+              onSelectPlaceById={handleSelectPlaceById}
+            />
+          </div>
+        )}
+
         {activeTab === 'map' && (
           <div className="py-4">
             <MapViewer

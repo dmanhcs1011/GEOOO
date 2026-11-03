@@ -41,6 +41,7 @@ export const MapViewer: React.FC<MapViewerProps> = ({
   const [activeLayer, setActiveLayer] = useState<MainContentLayer>(forcedLayer);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedDistrict, setSelectedDistrict] = useState<string>('all');
+  const [selectedRegion, setSelectedRegion] = useState<'all' | 'Thái Nguyên' | 'Bắc Kạn'>('all');
   const [showCommunes, setShowCommunes] = useState(true);
   const [selectedCommune, setSelectedCommune] = useState<Commune | null>(null);
   const [selectedPlaceId, setSelectedPlaceId] = useState<string | null>(null);
@@ -74,14 +75,27 @@ export const MapViewer: React.FC<MapViewerProps> = ({
     'all',
     'TP. Thái Nguyên',
     'TP. Sông Công',
-    'TX. Phổ Yên',
+    'TP. Phổ Yên',
     'Huyện Đại Từ',
     'Huyện Định Hóa',
     'Huyện Phú Lương',
     'Huyện Đồng Hỷ',
     'Huyện Võ Nhai',
     'Huyện Phú Bình',
-    'Vùng Ba Bể & Mở Rộng',
+    'TP. Bắc Kạn',
+    'Huyện Ba Bể',
+    'Huyện Pác Nặm',
+    'Huyện Chợ Đồn',
+    'Huyện Chợ Mới',
+    'Huyện Bạch Thông',
+    'Huyện Ngân Sơn',
+    'Huyện Na Rì',
+  ];
+
+  // Bounds covering the entire unified 92-commune territory (from south Phổ Yên to north Pác Nặm)
+  const PROVINCE_BOUNDS: L.LatLngBoundsExpression = [
+    [21.32, 105.42], // Southwest (Phú Thọ / Tuyên Quang / Hà Nội border)
+    [22.74, 106.28], // Northeast (Cao Bằng / Lạng Sơn border)
   ];
 
   // Initialize Map
@@ -90,8 +104,8 @@ export const MapViewer: React.FC<MapViewerProps> = ({
     if (mapInstanceRef.current) return;
 
     const map = L.map(mapContainerRef.current, {
-      center: [21.75, 105.78],
-      zoom: 9.5,
+      center: [21.95, 105.82],
+      zoom: 9,
       zoomControl: false,
     });
 
@@ -104,6 +118,11 @@ export const MapViewer: React.FC<MapViewerProps> = ({
 
     tileLayerRef.current = initialTile;
     mapInstanceRef.current = map;
+
+    // Fit map bounds smoothly
+    setTimeout(() => {
+      map.fitBounds(PROVINCE_BOUNDS, { padding: [15, 15] });
+    }, 150);
 
     return () => {
       map.remove();
@@ -137,11 +156,15 @@ export const MapViewer: React.FC<MapViewerProps> = ({
       } else if (activeLayer === 'tourism') {
         isVisible = place.category === 'history' || place.category === 'culture';
       } else if (activeLayer === 'education') {
-        isVisible = place.category === 'tea' || place.category === 'culture' || place.id === 'atk-dinh-hoa' || place.id === 'nguom-rock-shelter';
+        isVisible =
+          place.category === 'tea' ||
+          place.category === 'culture' ||
+          place.id === 'atk-dinh-hoa' ||
+          place.id === 'nguom-rock-shelter';
       } else if (activeLayer === 'disaster') {
         isVisible = place.category === 'disaster';
       } else if (activeLayer === 'communes') {
-        isVisible = false; // focus on communes
+        isVisible = false;
       }
 
       if (!isVisible) return;
@@ -151,7 +174,13 @@ export const MapViewer: React.FC<MapViewerProps> = ({
           <div class="absolute -inset-1.5 rounded-full opacity-60 animate-ping" style="background-color: ${place.color};"></div>
           <div class="relative w-8 h-8 rounded-full shadow-md flex items-center justify-center text-white border-2 border-white transition-transform group-hover:scale-125" style="background-color: ${place.color};">
             <span class="text-xs font-bold">${
-              place.category === 'tea' ? '🍃' : place.category === 'history' ? '🏛️' : place.category === 'culture' ? '🎭' : '⚠️'
+              place.category === 'tea'
+                ? '🍃'
+                : place.category === 'history'
+                ? '🏛️'
+                : place.category === 'culture'
+                ? '🎭'
+                : '⚠️'
             }</span>
           </div>
         </div>
@@ -196,7 +225,7 @@ export const MapViewer: React.FC<MapViewerProps> = ({
     });
   }, [activeLayer, lang, onSelectPlace]);
 
-  // Render & Update 92 Communes Markers
+  // Render & Update 92 Communes Markers with Accurate Number Badges (1..92) matching textbook map
   useEffect(() => {
     const map = mapInstanceRef.current;
     if (!map) return;
@@ -215,13 +244,21 @@ export const MapViewer: React.FC<MapViewerProps> = ({
       if (selectedDistrict !== 'all' && c.district !== selectedDistrict) {
         return;
       }
+      // Filter by region if selected
+      if (selectedRegion !== 'all' && c.region !== selectedRegion) {
+        return;
+      }
 
-      // Small clickable pill marker for commune
+      // Compact numbered marker badge matching the textbook image (number 1..92 + name)
       const communePinHtml = `
         <div class="cursor-pointer group flex items-center">
-          <div class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-white text-[#116149] border border-[#116149]/40 shadow-sm transition-all group-hover:scale-110 group-hover:bg-[#116149] group-hover:text-white flex items-center gap-1 whitespace-nowrap">
-            <span class="w-1.5 h-1.5 rounded-full bg-emerald-600 group-hover:bg-amber-300"></span>
-            <span>${c.name}</span>
+          <div class="px-1.5 py-0.5 rounded-full text-[10px] font-bold bg-white text-stone-900 border border-[#116149]/70 shadow-sm transition-all group-hover:scale-125 group-hover:z-50 group-hover:bg-[#116149] group-hover:text-white flex items-center gap-1 whitespace-nowrap">
+            <span class="w-4 h-4 rounded-full bg-[#116149] text-white flex items-center justify-center text-[9px] font-black group-hover:bg-amber-300 group-hover:text-stone-900 shrink-0">
+              ${c.number}
+            </span>
+            <span class="text-[10px] font-bold text-stone-800 group-hover:text-white truncate max-w-[120px]">
+              ${c.name.replace('Xã ', '').replace('P. ', 'P.')}
+            </span>
           </div>
         </div>
       `;
@@ -229,28 +266,37 @@ export const MapViewer: React.FC<MapViewerProps> = ({
       const communeIcon = L.divIcon({
         className: 'custom-commune-pin',
         html: communePinHtml,
-        iconSize: [80, 22],
-        iconAnchor: [40, 11],
+        iconSize: [110, 24],
+        iconAnchor: [55, 12],
       });
 
       const marker = L.marker([c.lat, c.lng], { icon: communeIcon });
 
       const popupHtml = `
-        <div style="font-family: Arial, sans-serif; padding: 4px; max-width: 230px;">
-          <div style="font-size: 10px; font-weight: bold; color: #116149; text-transform: uppercase;">
-            ${c.type} · ${c.district}
+        <div style="font-family: Arial, sans-serif; padding: 6px; max-width: 260px;">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;">
+            <span style="font-size: 11px; font-weight: 800; background-color: #116149; color: white; padding: 2px 7px; border-radius: 6px;">
+              Số ${c.number} / 92
+            </span>
+            <span style="font-size: 10px; color: #555; font-weight: bold;">
+              ${c.region} · ${c.district}
+            </span>
           </div>
-          <h3 style="margin: 3px 0; font-size: 15px; font-weight: bold; color: #111;">
+          <h3 style="margin: 4px 0 2px; font-size: 16px; font-weight: 800; color: #111;">
             ${c.name}
           </h3>
-          <p style="margin: 4px 0; font-size: 12px; color: #444; line-height: 1.4;">
+          <div style="font-size: 11px; color: #0e5945; font-weight: bold; margin-bottom: 4px;">
+            ${c.highlight || c.type}
+          </div>
+          <p style="margin: 4px 0; font-size: 12px; color: #444; line-height: 1.45;">
             ${lang === 'vi' ? c.featureVi : c.featureEn}
           </p>
-          <div style="margin-top: 6px; padding-top: 4px; border-top: 1px solid #eee; font-size: 11px;">
+          <div style="margin-top: 8px; padding-top: 6px; border-top: 1px solid #eee; display: flex; justify-content: space-between; font-size: 11px;">
+            <span style="color: #777; font-family: monospace;">GPS: ${c.lat.toFixed(4)}, ${c.lng.toFixed(4)}</span>
             <a target="_blank" rel="noopener noreferrer" href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
               `${c.name}, ${c.district}, Thái Nguyên`
             )}" style="color: #0e5945; font-weight: bold; text-decoration: none;">
-              🧭 Mở trên Google Maps ↗
+              🧭 Google Maps ↗
             </a>
           </div>
         </div>
@@ -264,14 +310,14 @@ export const MapViewer: React.FC<MapViewerProps> = ({
       marker.addTo(map);
       communeMarkersRef.current[c.id] = marker;
     });
-  }, [showCommunes, activeLayer, selectedDistrict, lang]);
+  }, [showCommunes, activeLayer, selectedDistrict, selectedRegion, lang]);
 
   // Fly to commune handler
   const handleFlyToCommune = (c: Commune) => {
     setSelectedCommune(c);
     const map = mapInstanceRef.current;
     if (map) {
-      map.flyTo([c.lat, c.lng], 13, { duration: 1.2 });
+      map.flyTo([c.lat, c.lng], 13.5, { duration: 1.2 });
       const marker = communeMarkersRef.current[c.id];
       if (marker) {
         setTimeout(() => marker.openPopup(), 600);
@@ -283,7 +329,7 @@ export const MapViewer: React.FC<MapViewerProps> = ({
     setSelectedPlaceId(place.id);
     const map = mapInstanceRef.current;
     if (map) {
-      map.flyTo([place.lat, place.lng], 13, { duration: 1.2 });
+      map.flyTo([place.lat, place.lng], 13.5, { duration: 1.2 });
       const marker = placeMarkersRef.current[place.id];
       if (marker) {
         setTimeout(() => marker.openPopup(), 600);
@@ -294,24 +340,42 @@ export const MapViewer: React.FC<MapViewerProps> = ({
   const handleResetProvince = () => {
     const map = mapInstanceRef.current;
     if (map) {
-      map.flyTo([21.75, 105.78], 9.5, { duration: 1 });
+      map.fitBounds(PROVINCE_BOUNDS, { padding: [15, 15], duration: 1 });
     }
   };
 
   // Filtered lists for sidebar
   const filteredCommunes = COMMUNES_92.filter((c) => {
     if (selectedDistrict !== 'all' && c.district !== selectedDistrict) return false;
+    if (selectedRegion !== 'all' && c.region !== selectedRegion) return false;
     if (!searchQuery.trim()) return true;
+
     const q = searchQuery.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    const num = c.number.toString();
     const name = c.name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
     const district = c.district.toLowerCase();
     const feat = c.featureVi.toLowerCase();
-    return name.includes(q) || district.includes(q) || feat.includes(q);
+
+    return (
+      q === num ||
+      num.includes(q) ||
+      name.includes(q) ||
+      district.includes(q) ||
+      feat.includes(q)
+    );
   });
 
   const filteredPlaces = PLACES.filter((p) => {
-    if (activeLayer === 'tourism' && p.category !== 'history' && p.category !== 'culture') return false;
-    if (activeLayer === 'education' && p.category !== 'tea' && p.category !== 'culture' && p.id !== 'atk-dinh-hoa' && p.id !== 'nguom-rock-shelter') return false;
+    if (activeLayer === 'tourism' && p.category !== 'history' && p.category !== 'culture')
+      return false;
+    if (
+      activeLayer === 'education' &&
+      p.category !== 'tea' &&
+      p.category !== 'culture' &&
+      p.id !== 'atk-dinh-hoa' &&
+      p.id !== 'nguom-rock-shelter'
+    )
+      return false;
     if (activeLayer === 'disaster' && p.category !== 'disaster') return false;
     if (!searchQuery.trim()) return true;
     const q = searchQuery.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
@@ -321,7 +385,7 @@ export const MapViewer: React.FC<MapViewerProps> = ({
 
   return (
     <div className="bg-[#f5f8f5] text-stone-900 border-b border-stone-200">
-      {/* 3 Prominent Layer Buttons Header Bar (Thanh 3 Nút Bấm Điều Khiển 3 Lớp Nội Dung) */}
+      {/* 3 Prominent Layer Buttons Header Bar */}
       <div className="bg-white border-b border-stone-200 px-4 py-3 shadow-xs">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row md:items-center justify-between gap-3">
           <div className="flex items-center gap-2">
@@ -335,7 +399,7 @@ export const MapViewer: React.FC<MapViewerProps> = ({
           <div className="flex flex-wrap items-center gap-2">
             <button
               onClick={() => setActiveLayer('tourism')}
-              className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-bold transition-all shadow-xs ${
+              className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-bold transition-all shadow-xs cursor-pointer ${
                 activeLayer === 'tourism'
                   ? 'bg-[#116149] text-white ring-2 ring-[#116149]/30'
                   : 'bg-stone-100 hover:bg-emerald-50 text-stone-700 border border-stone-200'
@@ -347,7 +411,7 @@ export const MapViewer: React.FC<MapViewerProps> = ({
 
             <button
               onClick={() => setActiveLayer('education')}
-              className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-bold transition-all shadow-xs ${
+              className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-bold transition-all shadow-xs cursor-pointer ${
                 activeLayer === 'education'
                   ? 'bg-[#198263] text-white ring-2 ring-[#198263]/30'
                   : 'bg-stone-100 hover:bg-emerald-50 text-stone-700 border border-stone-200'
@@ -359,7 +423,7 @@ export const MapViewer: React.FC<MapViewerProps> = ({
 
             <button
               onClick={() => setActiveLayer('disaster')}
-              className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-bold transition-all shadow-xs ${
+              className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-bold transition-all shadow-xs cursor-pointer ${
                 activeLayer === 'disaster'
                   ? 'bg-rose-700 text-white ring-2 ring-rose-700/30'
                   : 'bg-stone-100 hover:bg-rose-50 text-stone-700 border border-stone-200'
@@ -371,7 +435,7 @@ export const MapViewer: React.FC<MapViewerProps> = ({
 
             <button
               onClick={() => setActiveLayer('all')}
-              className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold transition-all ${
+              className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                 activeLayer === 'all'
                   ? 'bg-stone-800 text-white'
                   : 'bg-stone-100 hover:bg-stone-200 text-stone-700'
@@ -383,49 +447,86 @@ export const MapViewer: React.FC<MapViewerProps> = ({
             {/* 92 Communes Toggle Button */}
             <button
               onClick={() => setShowCommunes(!showCommunes)}
-              className={`flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold border transition-all ${
+              className={`flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold border transition-all cursor-pointer ${
                 showCommunes
-                  ? 'bg-amber-100 border-amber-300 text-amber-900 shadow-xs'
+                  ? 'bg-emerald-100 border-emerald-300 text-emerald-900 shadow-xs'
                   : 'bg-stone-50 border-stone-200 text-stone-500'
               }`}
               title={lang === 'vi' ? 'Bật/tắt 92 nút bấm xã trên bản đồ' : 'Toggle 92 commune pins'}
             >
-              <MapPin className="w-3.5 h-3.5 text-amber-600" />
-              <span>{lang === 'vi' ? '92 Xã / Phường TN & BC' : '92 Communes Layer'}</span>
-              <span className="w-2 h-2 rounded-full bg-amber-500"></span>
+              <MapPin className="w-3.5 h-3.5 text-[#116149]" />
+              <span>{lang === 'vi' ? '92 Đơn Vị Hành Chính (TN & BC)' : '92 Communes Layer'}</span>
+              <span className="w-2 h-2 rounded-full bg-emerald-600 animate-pulse"></span>
             </button>
           </div>
         </div>
       </div>
 
-      {/* Map + Sidebar Layout (Giống web site gốc) */}
+      {/* Map + Sidebar Layout */}
       <div className="max-w-7xl mx-auto p-3 sm:p-5 flex flex-col lg:flex-row gap-4 items-stretch">
-        {/* Left Explorer Sidebar (Nền sáng) */}
-        <aside className="w-full lg:w-96 bg-white rounded-2xl border border-stone-200 p-4 shadow-sm flex flex-col max-h-[680px]">
-          {/* Search Input */}
+        {/* Left Explorer Sidebar */}
+        <aside className="w-full lg:w-96 bg-white rounded-2xl border border-stone-200 p-4 shadow-sm flex flex-col max-h-[700px]">
+          {/* Search Input & Filters */}
           <div className="space-y-2.5 pb-3 border-b border-stone-100">
             <div className="flex items-center justify-between">
               <h3 className="font-bold text-stone-800 text-sm flex items-center gap-1.5">
                 <Building2 className="w-4 h-4 text-[#116149]" />
-                <span>{lang === 'vi' ? 'Danh mục Địa điểm & 92 Xã' : 'Locations & 92 Communes'}</span>
+                <span>{lang === 'vi' ? '92 Đơn Vị Hành Chính' : '92 Communes Directory'}</span>
               </h3>
               <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800">
                 {showCommunes ? filteredCommunes.length : filteredPlaces.length} điểm
               </span>
             </div>
 
+            {/* Search Box */}
             <div className="relative">
               <Search className="w-4 h-4 absolute left-3 top-2.5 text-stone-400" />
               <input
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder={lang === 'vi' ? 'Tìm xã, di tích, vùng chè...' : 'Search commune, tea, relics...'}
+                placeholder={lang === 'vi' ? 'Tìm theo số (1-92), tên xã, huyện...' : 'Search by number (1-92), commune...'}
                 className="w-full pl-9 pr-3 py-1.5 rounded-xl border border-stone-200 bg-stone-50 text-xs focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#116149]"
               />
             </div>
 
-            {/* District dropdown for 92 Communes */}
+            {/* Region Filter Buttons */}
+            {showCommunes && (
+              <div className="flex items-center gap-1">
+                <button
+                  onClick={() => setSelectedRegion('all')}
+                  className={`flex-1 py-1 text-[11px] font-bold rounded-lg transition-colors cursor-pointer ${
+                    selectedRegion === 'all'
+                      ? 'bg-[#116149] text-white'
+                      : 'bg-stone-100 text-stone-600 hover:bg-stone-200'
+                  }`}
+                >
+                  Tất cả (92)
+                </button>
+                <button
+                  onClick={() => setSelectedRegion('Thái Nguyên')}
+                  className={`flex-1 py-1 text-[11px] font-bold rounded-lg transition-colors cursor-pointer ${
+                    selectedRegion === 'Thái Nguyên'
+                      ? 'bg-[#116149] text-white'
+                      : 'bg-stone-100 text-stone-600 hover:bg-stone-200'
+                  }`}
+                >
+                  Thái Nguyên (49)
+                </button>
+                <button
+                  onClick={() => setSelectedRegion('Bắc Kạn')}
+                  className={`flex-1 py-1 text-[11px] font-bold rounded-lg transition-colors cursor-pointer ${
+                    selectedRegion === 'Bắc Kạn'
+                      ? 'bg-[#116149] text-white'
+                      : 'bg-stone-100 text-stone-600 hover:bg-stone-200'
+                  }`}
+                >
+                  Bắc Kạn (43)
+                </button>
+              </div>
+            )}
+
+            {/* District dropdown */}
             {showCommunes && (
               <div className="flex items-center gap-1.5">
                 <label className="text-[11px] font-semibold text-stone-500 shrink-0">
@@ -436,7 +537,9 @@ export const MapViewer: React.FC<MapViewerProps> = ({
                   onChange={(e) => setSelectedDistrict(e.target.value)}
                   className="flex-1 text-xs py-1 px-2 rounded-lg border border-stone-200 bg-white text-stone-700 focus:outline-none focus:border-[#116149]"
                 >
-                  <option value="all">{lang === 'vi' ? 'Tất cả 92 xã / phường' : 'All 92 communes'}</option>
+                  <option value="all">
+                    {lang === 'vi' ? 'Tất cả các huyện / thành phố' : 'All districts'}
+                  </option>
                   {districtList.slice(1).map((d) => (
                     <option key={d} value={d}>
                       {d}
@@ -502,18 +605,24 @@ export const MapViewer: React.FC<MapViewerProps> = ({
                           : 'bg-white hover:bg-stone-50 border-stone-100'
                       }`}
                     >
-                      <div className="min-w-0 pr-2">
-                        <div className="flex items-center gap-1.5">
-                          <span className="text-[10px] font-bold px-1.5 py-0.2 rounded bg-stone-100 text-stone-600">
-                            {c.type}
-                          </span>
-                          <h4 className="font-bold text-xs text-stone-900 truncate">
-                            {c.name}
-                          </h4>
+                      <div className="min-w-0 pr-2 flex items-start gap-2">
+                        <span className="w-5 h-5 rounded-md bg-[#116149] text-white flex items-center justify-center text-[10px] font-black shrink-0 mt-0.5">
+                          {c.number}
+                        </span>
+
+                        <div className="min-w-0">
+                          <div className="flex items-center gap-1.5">
+                            <h4 className="font-bold text-xs text-stone-900 truncate">
+                              {c.name}
+                            </h4>
+                            <span className="text-[9px] font-medium px-1 py-0.2 rounded bg-stone-100 text-stone-500">
+                              {c.district}
+                            </span>
+                          </div>
+                          <p className="text-[11px] text-stone-500 truncate mt-0.5">
+                            {c.highlight || (lang === 'vi' ? c.featureVi : c.featureEn)}
+                          </p>
                         </div>
-                        <p className="text-[11px] text-stone-500 truncate mt-0.5">
-                          📍 {c.district} · {lang === 'vi' ? c.featureVi : c.featureEn}
-                        </p>
                       </div>
 
                       <span className="text-xs text-emerald-700 font-bold shrink-0">
@@ -530,17 +639,22 @@ export const MapViewer: React.FC<MapViewerProps> = ({
           {selectedCommune && (
             <div className="mt-3 p-3 rounded-xl bg-[#eaf5ef] border border-emerald-200 space-y-1 text-xs">
               <div className="flex items-center justify-between">
-                <span className="font-bold text-[#116149] uppercase tracking-wider text-[10px]">
-                  {selectedCommune.type} {selectedCommune.name}
+                <span className="font-bold text-[#116149] text-xs flex items-center gap-1">
+                  <span className="w-4 h-4 rounded bg-[#116149] text-white flex items-center justify-center text-[10px] font-bold">
+                    {selectedCommune.number}
+                  </span>
+                  <span>{selectedCommune.name}</span>
                 </span>
-                <span className="text-[10px] text-stone-500">{selectedCommune.district}</span>
+                <span className="text-[10px] text-stone-500 font-semibold">
+                  {selectedCommune.region} · {selectedCommune.district}
+                </span>
               </div>
               <p className="text-stone-700 leading-snug">
                 {lang === 'vi' ? selectedCommune.featureVi : selectedCommune.featureEn}
               </p>
               <div className="pt-1 flex items-center justify-between text-[11px]">
                 <span className="text-stone-500 font-mono">
-                  {selectedCommune.lat.toFixed(4)}, {selectedCommune.lng.toFixed(4)}
+                  GPS: {selectedCommune.lat.toFixed(4)}, {selectedCommune.lng.toFixed(4)}
                 </span>
                 <a
                   href={`https://www.google.com/maps/dir/?api=1&destination=${selectedCommune.lat},${selectedCommune.lng}`}
@@ -555,45 +669,52 @@ export const MapViewer: React.FC<MapViewerProps> = ({
           )}
         </aside>
 
-        {/* Right Main Map Card (Nền sáng, giống web site gốc) */}
-        <div className="flex-1 bg-white rounded-2xl border border-stone-200 overflow-hidden shadow-sm flex flex-col min-h-[520px] lg:min-h-[640px] relative">
+        {/* Right Main Map Card */}
+        <div className="flex-1 bg-white rounded-2xl border border-stone-200 overflow-hidden shadow-sm flex flex-col min-h-[540px] lg:min-h-[660px] relative">
           {/* Top Floating Map Controls */}
           <div className="absolute top-3 right-3 z-30 flex items-center gap-2">
             {/* Base map switcher */}
             <div className="flex items-center p-1 bg-white/95 rounded-xl shadow-md border border-stone-200 text-xs font-semibold">
               <button
                 onClick={() => setActiveTile('osm')}
-                className={`px-2.5 py-1 rounded-lg transition-colors ${
-                  activeTile === 'osm' ? 'bg-[#116149] text-white' : 'text-stone-700 hover:bg-stone-100'
+                className={`px-2.5 py-1 rounded-lg transition-colors cursor-pointer ${
+                  activeTile === 'osm'
+                    ? 'bg-[#116149] text-white'
+                    : 'text-stone-700 hover:bg-stone-100'
                 }`}
               >
                 🗺️ Bản đồ
               </button>
               <button
                 onClick={() => setActiveTile('satellite')}
-                className={`px-2.5 py-1 rounded-lg transition-colors ${
-                  activeTile === 'satellite' ? 'bg-[#116149] text-white' : 'text-stone-700 hover:bg-stone-100'
+                className={`px-2.5 py-1 rounded-lg transition-colors cursor-pointer ${
+                  activeTile === 'satellite'
+                    ? 'bg-[#116149] text-white'
+                    : 'text-stone-700 hover:bg-stone-100'
                 }`}
               >
                 🛰️ Vệ tinh
               </button>
               <button
                 onClick={() => setActiveTile('topo')}
-                className={`px-2.5 py-1 rounded-lg transition-colors ${
-                  activeTile === 'topo' ? 'bg-[#116149] text-white' : 'text-stone-700 hover:bg-stone-100'
+                className={`px-2.5 py-1 rounded-lg transition-colors cursor-pointer ${
+                  activeTile === 'topo'
+                    ? 'bg-[#116149] text-white'
+                    : 'text-stone-700 hover:bg-stone-100'
                 }`}
               >
                 ⛰️ Địa hình
               </button>
             </div>
 
-            {/* Reset Button */}
+            {/* Reset View Button */}
             <button
               onClick={handleResetProvince}
-              className="flex items-center gap-1.5 px-3 py-1.5 bg-white/95 text-stone-800 rounded-xl shadow-md border border-stone-200 text-xs font-bold hover:bg-stone-50 transition-colors"
+              className="flex items-center gap-1.5 px-3 py-1.5 bg-white/95 text-stone-800 rounded-xl shadow-md border border-stone-200 text-xs font-bold hover:bg-stone-50 transition-colors cursor-pointer"
+              title="Xem toàn cảnh bản đồ 92 xã Thái Nguyên & Bắc Kạn"
             >
               <Compass className="w-3.5 h-3.5 text-[#116149]" />
-              <span>{lang === 'vi' ? 'Toàn tỉnh TN' : 'Province View'}</span>
+              <span>{lang === 'vi' ? 'Toàn cảnh 92 xã' : 'All 92 View'}</span>
             </button>
           </div>
 
@@ -602,10 +723,16 @@ export const MapViewer: React.FC<MapViewerProps> = ({
 
           {/* Bottom Map Legend */}
           <div className="bg-stone-50 border-t border-stone-200 px-4 py-2.5 z-20 flex flex-wrap items-center justify-between text-xs text-stone-600 gap-3">
-            <div className="flex items-center gap-3">
+            <div className="flex flex-wrap items-center gap-3">
               <span className="font-bold text-stone-800 flex items-center gap-1">
                 <Info className="w-3.5 h-3.5 text-[#116149]" />
                 <span>{lang === 'vi' ? 'Ký hiệu bản đồ:' : 'Legend:'}</span>
+              </span>
+              <span className="flex items-center gap-1">
+                <span className="w-4 h-4 rounded-full bg-[#116149] text-white text-[9px] font-bold flex items-center justify-center">
+                  #
+                </span>
+                <span className="font-medium">92 Vị trí xã/phường (chuẩn số 1-92 theo SGK)</span>
               </span>
               <span className="flex items-center gap-1">
                 <span className="w-2.5 h-2.5 rounded-full bg-red-600" />
@@ -619,16 +746,12 @@ export const MapViewer: React.FC<MapViewerProps> = ({
                 <span className="w-2.5 h-2.5 rounded-full bg-rose-600" />
                 <span>Cảnh báo thiên tai</span>
               </span>
-              <span className="flex items-center gap-1">
-                <span className="w-2.5 h-2.5 rounded-full bg-amber-500" />
-                <span>92 Xã / Phường</span>
-              </span>
             </div>
 
-            <span className="text-[11px] text-stone-400 italic">
+            <span className="text-[11px] text-stone-500 font-medium">
               {lang === 'vi'
-                ? 'Bản đồ số hỗ trợ giảng dạy Giáo dục địa phương Lớp 8'
-                : 'Digital Map for Grade 8 Local Education'}
+                ? 'Bản đồ 92 xã/phường sau sáp nhập (TN & BC) · GDĐP Lớp 8'
+                : '92 Communes Unified Map (TN & BC) · Grade 8 Curriculum'}
             </span>
           </div>
         </div>
